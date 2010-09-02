@@ -13,64 +13,79 @@ package
 	[SWF(backgroundColor="#E6E2AF", frameRate="60")]
 	public class HelloWorld extends Sprite
 	{
-		private var shape:Shape;
-		private var xspeed:int;
-		private var yspeed:int;
+		private var ball:Shape;
+		private var accelerometerData:Accelerometer;
+		private var xspeed:Number;
+		private var yspeed:Number;
+		private var gravity:Number;
+		private var friction:Number
+		private const RADIUS:Number = 50;
 		public function HelloWorld()
 		{
 			trace("hello world");
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
-			xspeed = 5;
-			yspeed = 5;
+			friction = .9;
+			xspeed = 0;
+			yspeed = 0;
 
+			if (Accelerometer.isSupported)
+			{
+				trace("accelerometer supported");
+				accelerometerData = new Accelerometer();
+				accelerometerData.addEventListener(AccelerometerEvent.UPDATE, updateAccelerometerData);
+			}
 
-			shape = new Shape();
-			shape.graphics.beginFill(0x046380,1);
-			shape.graphics.drawCircle(100,100,50);
-			shape.graphics.endFill();
-			addChild(shape);
+			ball = new Shape();
+			ball.graphics.beginFill(0x046380,1);
+			ball.graphics.drawCircle(100,100,RADIUS);
+			ball.graphics.endFill();
+			addChild(ball);
 
-			addEventListener(MouseEvent.CLICK, moveCircle);
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 
-			//var accelerometer:Accelerometer = new Accelerometer();
-			//accelerometer.addEventListener(AccelerometerEvent.UPDATE, onUpdate);
 
-		}
-
-		private function onUpdate(e:AccelerometerEvent):void {
-
-		}
-
-		private function moveCircle():void{
-			trace("move circle");
-			shape.x += mouseX;
-			shape.y += mouseY;
 		}
 
 		private function onEnterFrame(e:Event):void {
-			if (shape.x < 0){
-				xspeed = 5
-				trace("shapeX:" + shape.x);
+			var newX:Number = ball.x + xspeed;
+			var newY:Number = ball.y + yspeed;
+			if (ball.x < -50)
+			{
+				ball.x = -50;
+				xspeed *= friction;
 			}
-			if (shape.x > stage.stageWidth){
-				xspeed = -5;
-				trace("shapeX:" + shape.x);
+			else if (ball.x > stage.stageWidth - 150)
+			{
+				ball.x = stage.stageWidth - 150;
+				xspeed *= -.5;
 			}
-			if (shape.y > stage.stageHeight){
-				yspeed = -5;
-				trace("shapeY:" + shape.y);
+			else
+			{
+				ball.x += xspeed;
 			}
-			if (shape.y < 0){
-				yspeed = 5;
-				trace("shapeY:" + shape.y);
+
+			if (ball.y < -50)
+			{
+				ball.y = -50;
+				yspeed *= -.5;;
 			}
-			shape.x += xspeed;
-			shape.y += yspeed;
-			//trace("x speed: " + xspeed);
-			//trace("y speed: " + yspeed);
+			else if (ball.y > stage.stageHeight - 150)
+			{
+				ball.y = stage.stageHeight - 150;
+				yspeed *= -.5;
+			}
+			else
+			{
+				ball.y += yspeed;
+			}
+		}
+
+		private function updateAccelerometerData(e:AccelerometerEvent):void {
+			xspeed -= e.accelerationX * 4;
+			yspeed += e.accelerationY * 4;
 		}
 	}
 }
+
