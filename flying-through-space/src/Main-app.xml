@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://ns.adobe.com/air/application/2.5">
+	<id>com.ryancanulla.flyingthroughspace</id>
+	<filename>Main</filename>
+	<name>_Flying Through Space</name>
+	<versionNumber>0.0.5</versionNumber>
+	<initialWindow>
+		<content>src/Main.swf</content>
+		<visible>true</visible>
+		<fullScreen>true</fullScreen>
+		<autoOrients>false</autoOrients>
+		<aspectRatio>portrait</aspectRatio>
+		<width>480</width>
+		<height>800</height>
+	</initialWindow>
+	<supportedProfiles>mobileDevice desktop</supportedProfiles>
+	<android>
+		<manifestAdditions>
+			<manifest>
+				<data>
+					<![CDATA[
+						<uses-permission android:name="android.permission.INTERNET"/>
+					]]>
+				</data>
+			</manifest>
+		</manifestAdditions>
+	</android>
+
+	<icon>
+		<image48x48>assets/icon48.png</image48x48>
+		<image72x72>assets/icon72.png</image72x72>
+	</icon>
+</application>
