@@ -18,7 +18,7 @@ package
 		private var xspeed:Number;
 		private var yspeed:Number;
 		private var gravity:Number;
-		private var friction:Number
+		private var friction:Number;
 		private const RADIUS:Number = 50;
 		public function HelloWorld()
 		{
@@ -26,7 +26,7 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
-			friction = .9;
+			friction = -.9;
 			xspeed = 0;
 			yspeed = 0;
 
@@ -59,7 +59,7 @@ package
 			else if (ball.x > stage.stageWidth - 150)
 			{
 				ball.x = stage.stageWidth - 150;
-				xspeed *= -.5;
+				xspeed *= friction;
 			}
 			else
 			{
@@ -69,12 +69,12 @@ package
 			if (ball.y < -50)
 			{
 				ball.y = -50;
-				yspeed *= -.5;;
+				yspeed *= friction;
 			}
 			else if (ball.y > stage.stageHeight - 150)
 			{
 				ball.y = stage.stageHeight - 150;
-				yspeed *= -.5;
+				yspeed *= friction;
 			}
 			else
 			{
