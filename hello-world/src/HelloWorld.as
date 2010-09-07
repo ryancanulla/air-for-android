@@ -1,90 +1,141 @@
 package
 {
-	import flash.display.Shape;
-	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
-	import flash.events.AccelerometerEvent;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.sensors.Accelerometer;
-	import flash.text.TextField;
+import com.ryancanulla.airforandroid.model.MainModel;
+import com.ryancanulla.airforandroid.utils.AccelerometerDataLayer;
+import com.ryancanulla.airforandroid.view.MainViewContainer;
 
-	[SWF(backgroundColor="#E6E2AF", frameRate="60")]
+import flash.display.Shape;
+import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageAspectRatio;
+import flash.display.StageOrientation;
+import flash.display.StageScaleMode;
+import flash.events.AccelerometerEvent;
+import flash.events.Event;
+import flash.events.MouseEvent;
+import flash.events.TouchEvent;
+import flash.sensors.Accelerometer;
+import flash.system.TouchscreenType;
+import flash.text.TextField;
+import flash.ui.Multitouch;
+import flash.ui.MultitouchInputMode;
+import flash.utils.Dictionary;
+
+import mx.collections.ArrayCollection;
+
+	[SWF(backgroundColor="#0072BB", frameRate="30")]
 	public class HelloWorld extends Sprite
 	{
-		private var ball:Shape;
-		private var accelerometerData:Accelerometer;
-		private var xspeed:Number;
-		private var yspeed:Number;
-		private var gravity:Number;
-		private var friction:Number;
-		private const RADIUS:Number = 50;
+
+		private var raft:Sprite;
+		private var model:MainModel= MainModel.getInstance();
+
+
+
+		private var totalSwimmers:Number = 10;
+		private var mainView:MainViewContainer;
 		public function HelloWorld()
 		{
+
+			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			trace("hello world");
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
-			friction = -.9;
+			model.referenceToStage = this.stage;
+
+			mainView = new MainViewContainer();
+			addChild(mainView);
+
+
+		/*friction = -.6;
 			xspeed = 0;
 			yspeed = 0;
 
-			if (Accelerometer.isSupported)
-			{
-				trace("accelerometer supported");
-				accelerometerData = new Accelerometer();
-				accelerometerData.addEventListener(AccelerometerEvent.UPDATE, updateAccelerometerData);
+			radius = 25;
+*/
+
+			/*if(TouchEvent.TOUCH_TAP){
+				trace("has touch support");
+				raft.addEventListener(TouchEvent.TOUCH_BEGIN, grabRaft);
+				raft.addEventListener(TouchEvent.TOUCH_MOVE, moveRaft);
+				raft.addEventListener(TouchEvent.TOUCH_END, dropRaft);
 			}
+*/
 
-			ball = new Shape();
-			ball.graphics.beginFill(0x046380,1);
-			ball.graphics.drawCircle(100,100,RADIUS);
-			ball.graphics.endFill();
-			addChild(ball);
-
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-
+			//addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			//addChild(ball);
 
 		}
 
-		private function onEnterFrame(e:Event):void {
-			var newX:Number = ball.x + xspeed;
-			var newY:Number = ball.y + yspeed;
-			if (ball.x < -50)
+		/*private function onEnterFrame(e:Event):void {
+			var newX:Number = raft.x + xspeed;
+			var newY:Number = raft.y + yspeed;
+
+
+			for (var i:uint=0; i < swimmersClan.length; i++) {
+				var swimmer:Sprite = swimmersClan[i];
+				trace("swimmer");
+				if (raft.hitTestObject(swimmer)) {
+					trace("hit");
+					removeChild(swimmer);
+
+					swimmersClan.removeItemAt(i);
+				}
+			}
+
+
+			if (raft.x < 0)
 			{
-				ball.x = -50;
+				raft.x = 0;
+				trace(raft.x);
 				xspeed *= friction;
 			}
-			else if (ball.x > stage.stageWidth - 150)
+			else if (raft.x > stage.fullScreenWidth - raft.width)
 			{
-				ball.x = stage.stageWidth - 150;
+				raft.x = stage.fullScreenWidth - raft.width - 1;
 				xspeed *= friction;
 			}
 			else
 			{
-				ball.x += xspeed;
+				raft.x += xspeed;
 			}
 
-			if (ball.y < -50)
+			if (raft.y < 0)
 			{
-				ball.y = -50;
+				raft.y = 0;
 				yspeed *= friction;
 			}
-			else if (ball.y > stage.stageHeight - 150)
+			else if (raft.y > stage.fullScreenHeight - raft.width)
 			{
-				ball.y = stage.stageHeight - 150;
+				raft.y = stage.fullScreenHeight - raft.width - 1;
 				yspeed *= friction;
 			}
 			else
 			{
-				ball.y += yspeed;
+				raft.y += yspeed;
 			}
+		}*/
+
+
+
+		private function grabRaft(e:TouchEvent):void{
+			raft.startDrag();
+
+			//removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 
-		private function updateAccelerometerData(e:AccelerometerEvent):void {
-			xspeed -= e.accelerationX * 4;
-			yspeed += e.accelerationY * 4;
+		private function moveRaft(e:TouchEvent):void {
+			trace("move event");
+			//xspeed = xspeed * .65;
+			//yspeed = yspeed * .65;
+		}
+
+		private function dropRaft(e:TouchEvent):void {
+			//yspeed = 0;
+			//xspeed = 0;
+			raft.stopDrag();
+			//addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 	}
 }

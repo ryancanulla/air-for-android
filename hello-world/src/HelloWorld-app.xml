@@ -11,6 +11,7 @@
 		<autoOrients>true</autoOrients>
 		<width>480</width>
 		<height>800</height>
+		<!--<renderMode>gpu</renderMode>-->
 	</initialWindow>
 	<supportedProfiles>mobileDevice desktop</supportedProfiles>
 	<android>
