@@ -1,100 +1,94 @@
 package com.ryancanulla.airforandroid.controller
 {
-	import com.ryancanulla.airforandroid.view.Raft;
+    import com.ryancanulla.airforandroid.model.MainModel;
+    import com.ryancanulla.airforandroid.view.Raft;
 
-	import flash.display.Sprite;
-	import flash.events.AccelerometerEvent;
-	import flash.events.Event;
-	import flash.sensors.Accelerometer;
+    import flash.display.Sprite;
+    import flash.events.AccelerometerEvent;
+    import flash.events.Event;
+    import flash.sensors.Accelerometer;
 
-	public class RaftController extends Sprite
-	{
-		private var _view:Sprite;
-		private var accelerometerData:Accelerometer;
+    public class RaftController extends Sprite
+    {
+        private var _view:Sprite;
+        private var accelerometerData:Accelerometer;
+        private var model:MainModel = MainModel.getInstance();
+        private var raft:Raft;
+        private var xspeed:Number;
+        private var yspeed:Number;
+        private var gravity:Number;
+        private var friction:Number;
 
-		private var raft:Raft;
-		private var xspeed:Number;
-		private var yspeed:Number;
-		private var gravity:Number;
-		private var friction:Number;
+        public function RaftController(e:Sprite) {
+            _view = e;
+            init();
+        }
 
-		public function RaftController(e:Sprite)
-		{
-			_view = e;
-			init();
-		}
-		private function init():void {
-			createRaft();
+        private function init():void {
+            createRaft();
 
-			/*if (Accelerometer.isSupported)
-			{
-				trace("accelerometer supported");
-				accelerometerData = new Accelerometer();
-				accelerometerData.addEventListener(AccelerometerEvent.UPDATE, updateAccelerometerData);
-			}*/
-		}
+            friction = -.6;
+            xspeed = 0;
+            yspeed = 0;
 
-		private function createRaft():void {
-			raft = new Raft();
-			raft.x = 100;
-			raft.y = 100;
-			_view.addChild(raft);
-		}
+            if (Accelerometer.isSupported) {
+                trace("accelerometer supported");
+                accelerometerData = new Accelerometer();
+                accelerometerData.addEventListener(AccelerometerEvent.UPDATE, updateAccelerometerData);
+            }
 
-		private function updateLayout():void {
-			var newX:Number = raft.x + xspeed;
-			var newY:Number = raft.y + yspeed;
+            addEventListener(Event.ENTER_FRAME, updateLayout);
+        }
 
+        private function createRaft():void {
+            raft = new Raft();
+            raft.x = 100;
+            raft.y = 100;
+            _view.addChild(raft);
+        }
 
-			/*for (var i:uint=0; i < swimmersClan.length; i++) {
-				var swimmer:Sprite = swimmersClan[i];
-				trace("swimmer");
-				if (raft.hitTestObject(swimmer)) {
-					trace("hit");
-					removeChild(swimmer);
+        private function updateLayout(e:Event = null):void {
 
-					swimmersClan.removeItemAt(i);
-				}
-			}*/
+            /*for (var i:uint = 0; i < model.swimmersClan.length; i++) {
+               var swimmer:Sprite = model.swimmersClan[i];
+               trace("swimmer");
 
+               if (raft.hitTestObject(swimmer)) {
+               trace("hit");
+               removeChild(swimmer);
 
-			if (raft.x < 0)
-			{
-				raft.x = 0;
-				trace(raft.x);
-				xspeed *= friction;
-			}
-			else if (raft.x > stage.fullScreenWidth - raft.width)
-			{
-				raft.x = stage.fullScreenWidth - raft.width - 1;
-				xspeed *= friction;
-			}
-			else
-			{
-				raft.x += xspeed;
-			}
+               model.swimmersClan.removeItemAt(i);
+               }
+             }*/
 
-			if (raft.y < 0)
-			{
-				raft.y = 0;
-				yspeed *= friction;
-			}
-			else if (raft.y > stage.fullScreenHeight - raft.width)
-			{
-				raft.y = stage.fullScreenHeight - raft.width - 1;
-				yspeed *= friction;
-			}
-			else
-			{
-				raft.y += yspeed;
-			}
-		}
+            if (raft.x < 0) {
+                raft.x = 0;
+                xspeed *= friction;
+            }
+            else if (raft.x > 400 + raft.width) {
+                raft.x = 400 + raft.width - 1;
+                xspeed *= friction;
+            }
+            else {
+                raft.x += xspeed;
+            }
 
-		private function updateAccelerometerData(e:AccelerometerEvent):void {
-			xspeed -= e.accelerationX * 1.25;
-			yspeed += e.accelerationY * 1.25;
+            if (raft.y < 0) {
+                raft.y = 0;
+                yspeed *= friction;
+            }
+            else if (raft.y > 800 + raft.width) {
+                raft.y = 800 - raft.width - 1;
+                yspeed *= friction;
+            }
+            else {
+                raft.y += yspeed;
+            }
+        }
 
-			//updateLayout();
-		}
-	}
+        private function updateAccelerometerData(e:AccelerometerEvent):void {
+            xspeed -= e.accelerationX * 4;
+            yspeed += e.accelerationY * 4;
+        }
+    }
 }
