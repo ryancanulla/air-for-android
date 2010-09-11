@@ -2,6 +2,7 @@ package com.ryancanulla.airforandroid.view
 {
     import flash.display.Bitmap;
     import flash.display.Sprite;
+    import flash.geom.Matrix;
 
     public class Swimmer extends Sprite
     {
@@ -28,8 +29,8 @@ package com.ryancanulla.airforandroid.view
             freak = new drowningMan();
             freak.x = 0;
             freak.y = 0;
-            //freak.scaleX = .75;
-            //freak.scaleY = .75;
+            freak.cacheAsBitmapMatrix = new Matrix;
+            freak.cacheAsBitmap = true;
             addChild(freak);
         }
     }

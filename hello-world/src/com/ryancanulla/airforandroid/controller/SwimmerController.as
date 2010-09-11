@@ -32,12 +32,12 @@ package com.ryancanulla.airforandroid.controller
                 swimmer.y = 800 * Math.random();
                 _view.addChild(swimmer);
                 model.swimmersClan.addItem(swimmer);
-                addEventListener(Event.ENTER_FRAME, moveSwimmers);
             }
 
         }
 
-        private function moveSwimmers(e:Event):void {
+        public function updateLayout():void {
+
             for (var j:uint = 0; j < model.swimmersClan.length; j++) {
                 var swimmer:Swimmer = _view.getChildAt(j) as Swimmer;
 
@@ -48,7 +48,7 @@ package com.ryancanulla.airforandroid.controller
                     swimmer.y = Math.random() * 800;
                 }
             }
-
         }
+
     }
 }

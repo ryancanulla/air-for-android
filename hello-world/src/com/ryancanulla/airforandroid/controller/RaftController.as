@@ -18,6 +18,8 @@ package com.ryancanulla.airforandroid.controller
         private var yspeed:Number;
         private var gravity:Number;
         private var friction:Number;
+        private var _accelerationX:Number;
+        private var _accelerationY:Number;
 
         public function RaftController(e:Sprite) {
             _view = e;
@@ -25,48 +27,35 @@ package com.ryancanulla.airforandroid.controller
         }
 
         private function init():void {
-            createRaft();
-
             friction = -.6;
             xspeed = 0;
             yspeed = 0;
 
-            if (Accelerometer.isSupported) {
-                trace("accelerometer supported");
-                accelerometerData = new Accelerometer();
-                accelerometerData.addEventListener(AccelerometerEvent.UPDATE, updateAccelerometerData);
-            }
-
-            addEventListener(Event.ENTER_FRAME, updateLayout);
+            createChildren();
         }
 
-        private function createRaft():void {
+        private function createChildren():void {
             raft = new Raft();
-            raft.x = 100;
-            raft.y = 100;
             _view.addChild(raft);
         }
 
-        private function updateLayout(e:Event = null):void {
+        public function updateLayout():void {
 
-            /*for (var i:uint = 0; i < model.swimmersClan.length; i++) {
-               var swimmer:Sprite = model.swimmersClan[i];
-               trace("swimmer");
+            for (var i:uint = 0; i < model.swimmersClan.length; i++) {
+                var swimmer:Sprite = model.swimmersClan[i];
 
-               if (raft.hitTestObject(swimmer)) {
-               trace("hit");
-               removeChild(swimmer);
-
-               model.swimmersClan.removeItemAt(i);
-               }
-             }*/
+                if (raft.hitTestObject(swimmer)) {
+                    _view.removeChild(swimmer);
+                    model.swimmersClan.removeItemAt(i);
+                }
+            }
 
             if (raft.x < 0) {
                 raft.x = 0;
                 xspeed *= friction;
             }
-            else if (raft.x > 400 + raft.width) {
-                raft.x = 400 + raft.width - 1;
+            else if (raft.x > 480 - raft.width) {
+                raft.x = 480 - raft.width - 1;
                 xspeed *= friction;
             }
             else {
@@ -77,7 +66,7 @@ package com.ryancanulla.airforandroid.controller
                 raft.y = 0;
                 yspeed *= friction;
             }
-            else if (raft.y > 800 + raft.width) {
+            else if (raft.y > 800 - raft.width) {
                 raft.y = 800 - raft.width - 1;
                 yspeed *= friction;
             }
@@ -86,9 +75,16 @@ package com.ryancanulla.airforandroid.controller
             }
         }
 
-        private function updateAccelerometerData(e:AccelerometerEvent):void {
-            xspeed -= e.accelerationX * 4;
-            yspeed += e.accelerationY * 4;
+        private function updateAccelerometer():void {
+            xspeed -= _accelerationX * 4;
+            yspeed += _accelerationY * 4;
+        }
+
+        public function setAcceleration(accX:Number, accY:Number):void {
+            _accelerationX = accX;
+            _accelerationY = accY;
+
+            updateAccelerometer();
         }
     }
 }

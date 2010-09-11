@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application xmlns="http://ns.adobe.com/air/application/2.5">
-	<id>com.ryancanulla.helloworld</id>
-	<filename>HelloWorld</filename>
-	<name>_HelloWorld</name>
-	<versionNumber>1.0.5</versionNumber>
-	<initialWindow>
-		<content>src/HelloWorld.swf</content>
-		<visible>true</visible>
-		<fullScreen>true</fullScreen>
-		<autoOrients>true</autoOrients>
-		<width>480</width>
-		<height>800</height>
-		<!--<renderMode>gpu</renderMode>-->
-	</initialWindow>
-	<supportedProfiles>mobileDevice desktop</supportedProfiles>
-	<android>
-		<manifestAdditions>
-			<manifest>
-				<data>
-					<![CDATA[
-						<uses-permission android:name="android.permission.INTERNET"/>
-					]]>
-				</data>
-			</manifest>
-		</manifestAdditions>
-	</android>
+    <id>com.ryancanulla.helloworld</id>
+    <filename>HelloWorld</filename>
+    <name>_HelloWorld</name>
+    <versionNumber>1.0.5</versionNumber>
+    <initialWindow>
+        <content>src/HelloWorld.swf</content>
+        <!--<renderMode>gpu</renderMode>-->
+        <visible>true</visible>
+        <fullScreen>true</fullScreen>
+        <autoOrients>true</autoOrients>
+        <width>480</width>
+        <height>800</height>
 
-	<icon>
-		<image48x48>assets/icon48.png</image48x48>
-		<image72x72>assets/icon72.png</image72x72>
-	</icon>
+    </initialWindow>
+    <supportedProfiles>mobileDevice desktop</supportedProfiles>
+    <android>
+        <manifestAdditions>
+            <manifest>
+                <data>
+                    <![CDATA[
+                        <uses-permission android:name="android.permission.INTERNET"/>
+                        <uses-permission android:name="android.permission.WAKE_LOCK" />
+                        <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+                    ]]>
+                </data>
+            </manifest>
+        </manifestAdditions>
+    </android>
+
+    <icon>
+        <image48x48>assets/icon48.png</image48x48>
+        <image72x72>assets/icon72.png</image72x72>
+    </icon>
 </application>
